@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Like;
 
 class User extends Authenticatable
 {
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo',
+        'category_id'
     ];
 
     /**
@@ -41,4 +44,39 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    // User.php モデルファイル
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+    
+    public function category()
+    {
+        return $this->hasOne(Category::class);
+    }
+    
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+    
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+    
+    // 自分 (繋ぎ元) がフォローしているユーザー (繋ぎ先) をリレーション
+    // 自分 -> 自分がフォローしているユーザー
+    public function followings(){
+        return $this->belongsToMany(User::class, 'follows', 'follower_user_id', 'followee_user_id');
+    }
+    
+    // 自分 (繋ぎ先) をフォローしているユーザー = フォロワー (繋ぎ元) をリレーション
+    // フォロワー -> 自分
+    public function followers(){
+        return $this->belongsToMany(User::class, 'follows', 'followee_user_id', 'follower_user_id');
+        
+    }
+
 }
