@@ -45,6 +45,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     
+   
     // User.php モデルファイル
     public function posts()
     {

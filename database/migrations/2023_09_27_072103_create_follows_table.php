@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('follows', function (Blueprint $table) {
+       Schema::create('follows', function (Blueprint $table) {
             // フォローしているユーザー (自分)
             $table->foreignId('follower_user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             // フォローされているユーザー (自分がフォローしているユーザー)
             $table->foreignId('followee_user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-        
+
             $table->primary(['follower_user_id', 'followee_user_id']);
-        });
+       });
     }
 
     /**
