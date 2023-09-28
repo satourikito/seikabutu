@@ -9,9 +9,9 @@ class Follow extends Model
 {
     use HasFactory;
     
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,);
     }
     
     public $timestamps = false;//followsテーブルにtimestampsがないので
