@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{user}', [UserController::class,'show'])->name('users.show');
     
     Route::post('/follow', [FollowController::class,'follow'])->name('follow');
+    
+    Route::post('/follow', [FollowController::class,'unfollow'])->name('unfollow');
 
 
 

@@ -9,12 +9,23 @@ class Follow extends Model
 {
     use HasFactory;
     
+    protected $fillable = ['followed_user_id', 'user_id'];
+    
+    // public function user()
+    // {
+    //     return $this->belongsToMany(User::class,);
+    // }
+    
+    // public $timestamps = false;//followsテーブルにtimestampsがないので
+    
     public function user()
     {
-        return $this->belongsToMany(User::class,);
+        return $this->belongsTo(User::class, 'followed_user_id');
     }
-    
-    public $timestamps = false;//followsテーブルにtimestampsがないので
-    
+
+    public function followingUser()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     
 }

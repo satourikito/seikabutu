@@ -69,15 +69,40 @@ class User extends Authenticatable
     
     // 自分 (繋ぎ元) がフォローしているユーザー (繋ぎ先) をリレーション
     // 自分 -> 自分がフォローしているユーザー
-    public function followings(){
-        return $this->belongsToMany(User::class, 'follows', 'follower_user_id', 'followee_user_id');
+    // public function followings(){
+    //     return $this->belongsToMany(User::class, 'follows', 'follower_user_id', 'followee_user_id');
+    // }
+    
+    // // 自分 (繋ぎ先) をフォローしているユーザー = フォロワー (繋ぎ元) をリレーション
+    // // フォロワー -> 自分
+    // public function followers(){
+    //     return $this->belongsToMany(User::class, 'follows', 'followee_user_id', 'follower_user_id');
+        
+    // }
+    
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'followed_user_id');
     }
     
-    // 自分 (繋ぎ先) をフォローしているユーザー = フォロワー (繋ぎ元) をリレーション
-    // フォロワー -> 自分
-    public function followers(){
-        return $this->belongsToMany(User::class, 'follows', 'followee_user_id', 'follower_user_id');
-        
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_user_id', 'user_id');
+    }
+    
+    public function follow(User $user)
+    {
+        $this->followings()->attach($user->id);
+    }
+    
+    public function unfollow(User $user)
+    {
+        $this->followings()->detach($user->id);
+    }
+    
+    public function isFollowing(User $user)
+    {
+        return $this->followings->contains($user);
     }
 
 }
